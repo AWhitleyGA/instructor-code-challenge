@@ -10,6 +10,10 @@ app.use(bodyParser.json());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+app.get('/', function(req, res){
+  res.sendFile('index')
+});
+
 app.get('/favorites', function(req, res){
   var data = fs.readFileSync('./data.json');
   res.setHeader('Content-Type', 'application/json');
