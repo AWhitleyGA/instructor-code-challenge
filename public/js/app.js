@@ -9,11 +9,9 @@ $('#search-form').on('submit', (evt) => {
   // prevent page reload
   evt.preventDefault()
   let searchTerm = $('#search-form input[type="text"]').val()
-  console.log(searchTerm)
   // send JSON request to OMDB API with query interpolated into URL
   $.getJSON(`http://www.omdbapi.com/?s=${searchTerm}`, (results) => {
     let movies = results.Search
-    console.log(movies)
     $('#results-gallery').html('')
     // loop through results and create movie icons for each result
     movies.forEach((movie) => {
@@ -33,7 +31,6 @@ $('#search-form').on('submit', (evt) => {
     $('.poster').on('click', (evt) => {
       evt.preventDefault()
       let imdbID = evt.target.name
-      console.log(imdbID)
       // retrieve full movie details from OMDB API when movie is selected by interpolating the imdbID into query
       $.getJSON(`http://www.omdbapi.com/?i=${imdbID}`, (result) => {
         $('#movie-details').html(
