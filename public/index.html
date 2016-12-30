@@ -13,23 +13,30 @@
     <nav>
       <div class="logo-text">MovieFinder</div>
       <div>
-        <a href="#">Search</a> | <a href="#">Favorites</a>
+        <a href="#" class="search-link">Search</a> | <a href="#" id="favorites-link">Favorites</a>
       </div>
     </nav>
     <main>
       <div class="page-view" id="search-page">
         <div>
           <p>Enter Movie Title to Search For</p>
-          <input type="text">
-          <input type="button" value="Search">
+          <form id="search-form">
+            <input type="text">
+            <input type="submit" value="Search">
+          </form>
         </div>
       </div>
       <div class="page-view" id="results-page" style="display: none;">
         <div>
           <h1>Results</h1>
+          <a href="#" class="search-link"> &larr; Search Again </a>
           <div id="results-gallery">
           </div>
-          <a href="#"> &larr; Search Again </a>
+        </div>
+      </div>
+      <div class="page-view" id="movie-details-page" style="display: none;">
+        <a href="#" class="results-link"> &larr; Back to Results </a><button id="add-favorite">Add to Favorites</button>
+        <div id="movie-details">
         </div>
       </div>
       <div class="page-view" id="favorites-page" style="display: none;">

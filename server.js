@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
-  res.sendFile('index')
+  res.render('index')
 });
 
 app.get('/favorites', function(req, res){
@@ -21,7 +21,7 @@ app.get('/favorites', function(req, res){
 });
 
 app.post('/favorites', function(req, res){
-  if(!req.body.name || !req.body.id){
+  if(!req.body.Title || !req.body.imdbID){
     res.send("Error");
     return
   }
