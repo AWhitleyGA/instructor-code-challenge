@@ -1,17 +1,21 @@
+// document ready containing function to ensure proper event handling / no exposed global variables
 $(document).ready(() => {
 
-console.log('app.js connected')
 
 let selectedMovie = {}
 
+// event handling for search form submission
 $('#search-form').on('submit', (evt) => {
+  // prevent page reload
   evt.preventDefault()
   let searchTerm = $('#search-form input[type="text"]').val()
   console.log(searchTerm)
+  // send JSON request to OMDB API with query interpolated into URL
   $.getJSON(`http://www.omdbapi.com/?s=${searchTerm}`, (results) => {
     let movies = results.Search
     console.log(movies)
     $('#results-gallery').html('')
+    // loop through results and create movie icons for each result
     movies.forEach((movie) => {
       $('#results-gallery').append(
         `
@@ -25,11 +29,12 @@ $('#search-form').on('submit', (evt) => {
     $('#search-page').hide()
     $('#results-page').show()
 
-
+    // attach event listeners to appended movie icons to link to movie details
     $('.poster').on('click', (evt) => {
       evt.preventDefault()
       let imdbID = evt.target.name
       console.log(imdbID)
+      // retrieve full movie details from OMDB API when movie is selected by interpolating the imdbID into query
       $.getJSON(`http://www.omdbapi.com/?i=${imdbID}`, (result) => {
         $('#movie-details').html(
           `
@@ -45,6 +50,7 @@ $('#search-form').on('submit', (evt) => {
           </div>
           `
         )
+        // save selected movie to external variable for use in favoriting
         selectedMovie = result
         $('#results-page').hide()
         $('#movie-details-page').show()
@@ -53,15 +59,17 @@ $('#search-form').on('submit', (evt) => {
   })
 })
 
+// add event listener to favorite button to trigger saving movie to back-end
 $('#add-favorite').on('click', () => {
-  console.log(selectedMovie)
+  // send http POST request to back-end with data from external variable
   $.ajax({
     url: '/favorites',
     type: 'post',
     dataType: 'json',
     data: selectedMovie
   }).done((favorites) => {
-    console.log(favorites)
+    // when finished, update and re-render favorites view
+    $('#favorites-gallery').html('')
     favorites.forEach((movie) => {
       $('#favorites-gallery').append(
         `
@@ -79,8 +87,10 @@ $('#add-favorite').on('click', () => {
   })
 })
 
+// handle link navigation to favorites page
 $('#favorites-link').on('click', (evt) => {
   evt.preventDefault()
+  // send http GET request to back-end for current favorites
   $.getJSON('/favorites', (favorites) => {
     $('#favorites-gallery').html('')
     favorites.forEach((movie) => {
@@ -98,17 +108,20 @@ $('#favorites-link').on('click', (evt) => {
   })
 })
 
+// handle link navigation to search page
 $('.search-link').on('click', (evt) => {
   evt.preventDefault()
   $('.page-view').hide()
   $('#search-page').show()
 })
 
+// handle link navigation to results page
 $('.results-link').on('click', (evt) => {
   evt.preventDefault()
   $('.page-view').hide()
   $('#results-page').show()
 })
+
 
 
 
